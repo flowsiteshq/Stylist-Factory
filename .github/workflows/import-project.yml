@@ -1,0 +1,27 @@
+name: Import Stylist Factory source
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - stylist-factory-source.zip
+
+permissions:
+  contents: write
+
+jobs:
+  import-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Unpack and commit project source
+        run: |
+          unzip -q stylist-factory-source.zip
+          rm stylist-factory-source.zip
+          rm .github/workflows/import-project.yml
+          git config user.name "Stylist Factory Import"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -m "Import Stylist Factory source"
+          git push
